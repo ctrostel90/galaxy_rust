@@ -1,0 +1,89 @@
+import { Button, VerticalBox, GridBox } from "std-widgets.slint";
+
+struct PotentialGalaxy{
+    
+    SystemColor: color
+}
+
+component GalaxyTile inherits Rectangle {
+    in property <color> bg;
+    in property <string> idx;
+    callback clicked();
+     
+    background: root.bg;
+
+    TouchArea {
+        clicked => {
+            root.clicked();
+        }
+        width: 100%;
+        height: 100%;
+    }
+    Text {
+        text: idx;
+    }
+    
+}
+
+export component AppWindow inherits Window {
+    width: 700px;
+    height: 600px;
+
+    in property <[PotentialGalaxy]> galaxy;
+    out property <int> row-count: 15;
+    out property <int> column-count: 12;
+    private property <length> tile-size: 30px;
+    private property <length> tile-spacing: 5px;
+    
+
+    callback generate-universe();
+    callback print-xy(int, int);
+
+    HorizontalLayout {
+        VerticalLayout {
+            padding: 5px;
+            Text {
+                max-height: 100px;
+                text: "Hello";
+                font-size: 36px;
+            }
+            HorizontalLayout {
+                max-height: 60px;
+                Text{
+                    text: "Num Planets:";
+                    font-size: 24px;
+                }
+                Text{
+                    text: "20";
+                    font-size: 24px;
+                    font-weight: 500;
+                }
+            }
+            Button {
+                text: "Generate";
+                primary: true;
+                max-height: 60px;   
+                clicked => {generate-universe()}
+            }
+        }
+        VerticalLayout {
+            for idx-x in root.row-count: 
+                HorizontalLayout{
+                    padding: 2px;
+                    for idx-y in root.column-count:
+                        GalaxyTile {
+                            clicked => {
+                                root.print-xy(idx-x,idx-y);
+                            }
+                            border-width: 2px;
+                            border-color: yellow;
+                            width: 30px;
+                            height: 30px;
+                            idx: root.column-count * idx-x + idx-y;
+                            background: root.galaxy[root.column-count * idx-x + idx-y].SystemColor;
+                        }
+                }
+            
+        }
+    }
+}
