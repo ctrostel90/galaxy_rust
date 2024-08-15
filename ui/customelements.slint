@@ -1,0 +1,9 @@
+export component SystemBody inherits Rectangle{
+    in property <length> radius;
+    
+    width: root.radius * 2;
+    height: root.radius * 2;
+    y: self.height / 2;
+    border-radius: self.width / 2;
+    background: self.border-color;
+}
