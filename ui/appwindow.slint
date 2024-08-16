@@ -2,27 +2,27 @@ import { Button, VerticalBox, GridBox } from "std-widgets.slint";
 
 import {SystemBody} from "./customelements.slint";
 
-struct PotentialGalaxy{
+struct GalaxyModel{
     Id: int,
     Populated: bool,
     SystemColor: color
 }
-struct StarBody{
+struct StarModel{
     Size:length
 }
-struct PlanetBody{
+struct PlanetModel{
     Size:length
 }
-struct SolarSystem{
-    Star:StarBody,
-    Planets: [PlanetBody],
+struct SolarSystemModel{
+    Star:StarModel,
+    Planets: [PlanetModel],
 }
 
 
 
 component GalaxyTile inherits Rectangle {
     in property <color> bg;
-    in property <PotentialGalaxy> galaxy;
+    in property <GalaxyModel> galaxy;
     callback clicked();
      
     background: root.galaxy.Populated ? root.galaxy.SystemColor : black;
@@ -41,12 +41,12 @@ component GalaxyTile inherits Rectangle {
     
 }
 
-export component AppWindow inherits Window {
+export component MainWindow inherits Window {
     width: 1400px;
     height: 600px;
 
-    in property <[PotentialGalaxy]> galaxy;
-    in property <SolarSystem> selected-system;
+    in property <[GalaxyModel]> galaxy;
+    in property <SolarSystemModel> selected-system;
 
     in property <int> name;
     in property <int> num-systems;
@@ -57,7 +57,7 @@ export component AppWindow inherits Window {
     
 
     callback generate-universe();
-    callback print-xy(int, int);
+    callback select-system(int, int);
 
     HorizontalLayout {
         VerticalLayout {
@@ -99,7 +99,7 @@ export component AppWindow inherits Window {
                     for idx-y in root.column-count:
                         GalaxyTile {
                             clicked => {
-                                root.print-xy(idx-x,idx-y);
+                                root.select-system(idx-x,idx-y);
                             }
                             
                             border-width: 2px;
@@ -122,6 +122,10 @@ export component AppWindow inherits Window {
             HorizontalLayout {
                 height: 50%;
                 alignment: center;
+                SystemBody {
+                    radius: root.selected-system.Star.Size;
+                    border-color: yellow;
+                }
                 for planet in root.selected-system.Planets : 
                     SystemBody {
                         radius: planet.Size * 10;
