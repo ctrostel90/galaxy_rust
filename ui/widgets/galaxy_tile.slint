@@ -1,0 +1,56 @@
+import {HorizontalBox} from "std-widgets.slint";
+
+@rust-attr(derive(serde::Serialize, serde::Deserialize))
+export struct GalaxyTileItem{
+    occupied:bool,
+    name: string,
+    sun:color,
+}
+
+export component GalaxyTileView{
+    callback select;
+    
+    in property <string> name <=> galaxy-label.text;
+    in property <bool> occupied <=> galaxy-star.visible;
+    in property <brush> star-color <=> galaxy-star.background;
+
+    HorizontalBox {
+        width: 100px;
+        height: 100px;
+        
+        background := Rectangle {
+            background: #5d5179;
+            border-radius: 10px;
+            
+            galaxy-star := Rectangle{
+                y: (parent.height - self.height) / 2.5;
+                width: 40px;
+                height: self.width;
+                border-color: self.background;
+                border-radius: self.width / 2;
+                background: yellow;
+            }
+
+            galaxy-label := Text {
+                y: (parent.height - self.height);
+                font-family: "Roboto";
+                font-size: 20px;
+                color: #94e2a5;
+                text: "Test1";
+                visible: root.occupied;
+            }
+            planet-number-label := Text {
+                y: -self.height / 5;
+                x: (parent.width - self.width) / 1.2;
+                horizontal-alignment: right;
+                font-family: "Roboto";
+                font-size: 10px;
+                color: #94e2a5;
+                text: "5 planets";
+                visible: root.occupied;
+            }
+        }
+        
+        
+    }
+}
