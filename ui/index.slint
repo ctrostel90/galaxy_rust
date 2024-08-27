@@ -1,0 +1,25 @@
+import { UniverseOverviewView,UniverseOverviewAdapter } from "./views/universe_overview_view.slint";
+import { GalaxyDetailView } from "./views/galaxy_detail_view.slint";
+import { HorizontalBox, VerticalBox } from "std-widgets.slint";
+export { UniverseOverviewAdapter }
+
+export component MainWindow inherits Window {
+    width: 1000px;
+    height: 700px;
+    title: "Universe Viewer";
+
+    layout := HorizontalBox {
+        width: 100%;      
+        galaxy-detail := GalaxyDetailView {
+            set-selected-galaxy => {
+                universe-overview.select()
+            }
+        }
+        
+        universe-overview := UniverseOverviewView {
+            
+        }
+
+        
+    }
+}

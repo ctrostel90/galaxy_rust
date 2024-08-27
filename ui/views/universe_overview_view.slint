@@ -2,31 +2,45 @@ import {GalaxyTileView,GalaxyTileItem} from "../widgets/galaxy_tile.slint";
 import { VerticalBox, HorizontalBox } from "std-widgets.slint";
 
 export global UniverseOverviewAdapter{
-    
+    in-out property <[GalaxyTileItem]> model:[
+        {name:"System 1", occupied: true, sun-color: Colors.green, num-planets: 6},
+        {name:"System 2", occupied: false, sun-color: Colors.blue, num-planets: 6},
+        {name:"System 3", occupied: false, sun-color: Colors.blue, num-planets: 6},
+        {name:"System 4", occupied: true, sun-color: Colors.blue, num-planets: 6},
+        {name:"System 5", occupied: true, sun-color: Colors.red, num-planets: 2},
+        {name:"System 6", occupied: false, sun-color: Colors.red, num-planets: 6},
+        {name:"System 7", occupied: true, sun-color: Colors.blue, num-planets: 8},
+        {name:"System 8", occupied: true, sun-color: Colors.pink, num-planets: 51},
+        {name:"System 9", occupied: false, sun-color: Colors.blue, num-planets: 5},
+        {name:"System 10", occupied: true, sun-color: Colors.blue, num-planets: 6},
+        {name:"System 11", occupied: true, sun-color: Colors.greenyellow, num-planets: 4},
+        {name:"System 12", occupied: true, sun-color: Colors.blue, num-planets: 6},
+        {name:"System 13", occupied: false, sun-color: Colors.blue, num-planets: 2},
+        {name:"System 14", occupied: true, sun-color: Colors.yellowgreen, num-planets: 6},
+        {name:"System 15", occupied: true, sun-color: Colors.paleturquoise, num-planets: 10},
+    ];
+
+    callback select-galaxy(int) -> GalaxyTileItem;
+
+    select-galaxy(index) => {
+        root.model[index]
+    }
+    function item(index: int) -> GalaxyTileItem{
+        root.model[index]
+    }
 }
 export component UniverseOverviewView {
-    in-out property <[GalaxyTileItem]> model:[
-        {name:"System 1", occupied: true},
-        {name:"System 2", occupied: true},
-        {name:"System 3", occupied: false},
-        {name:"System 4", occupied: true},
-        {name:"System 5", occupied: true},
-        {name:"System 6", occupied: true},
-        {name:"System 7", occupied: true},
-        {name:"System 8", occupied: true},
-        {name:"System 9", occupied: true},
-        {name:"System 10", occupied: true},
-        {name:"System 11", occupied: true},
-        {name:"System 12", occupied: true},
-        {name:"System 13", occupied: true},
-        {name:"System 14", occupied: true},
-        {name:"System 15", occupied: true},
-        
-    ];
 
     in property <int> view-columns: 8;
     in property <int> view-rows: 7;
-    
+
+    callback select() -> GalaxyTileItem;
+
+    select() => {
+        UniverseOverviewAdapter.select-galaxy(selected-index)
+    }
+    property <int> selected-index;
+
     HorizontalBox {
         width: view-columns * 100px;
         height: view-rows * 100px;
@@ -34,11 +48,13 @@ export component UniverseOverviewView {
         for column in view-columns: VerticalBox {
             for row in view-rows:
                 GalaxyTileView {
-                    name: root.model[root.view-columns * column + row].name;
+                    galaxy-model: UniverseOverviewAdapter.model[root.view-columns * column + row];
+                    
+                    clicked => {
+                        selected-index = root.view-columns * column + row;
+                        root.select();
+                    }
                 }
-            
-            
         }
     }
-    
 }
