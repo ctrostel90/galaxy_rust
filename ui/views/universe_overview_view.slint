@@ -44,7 +44,9 @@ export component UniverseOverviewView {
     HorizontalBox {
         width: view-columns * 100px;
         height: view-rows * 100px;
-
+        test := Text {
+            text: "TEST TEXT";
+        }
         for column in view-columns: VerticalBox {
             for row in view-rows:
                 GalaxyTileView {
@@ -52,6 +54,7 @@ export component UniverseOverviewView {
                     
                     clicked => {
                         selected-index = root.view-columns * column + row;
+                        test.text = selected-index;
                         root.select();
                     }
                 }
