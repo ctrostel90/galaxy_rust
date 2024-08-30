@@ -1,6 +1,5 @@
 import {HorizontalBox} from "std-widgets.slint";
 
-@rust-attr(derive(serde::Serialize, serde::Deserialize))
 export struct GalaxyTileItem{
     occupied:bool,
     name: string,
@@ -9,9 +8,11 @@ export struct GalaxyTileItem{
 }
 
 export component GalaxyTileView{
-    callback clicked() -> GalaxyTileItem;
+    callback clicked();
 
     in property <GalaxyTileItem> galaxy-model;
+    in property <int> x_coord: 0;
+    in property <int> y_coord: 0;
     in property <int> index;
     
     property <bool> selected: false;
@@ -23,9 +24,7 @@ export component GalaxyTileView{
             background.background: #5d5179;
         }
     ]
-    clicked => {
-        galaxy-model
-    }
+
     touch-area := TouchArea{
         width: 100%;
         height: 100%;
@@ -42,7 +41,12 @@ export component GalaxyTileView{
         background := Rectangle {
             background: #5d5179;
             border-radius: 10px;
-            
+            coord-label := Text{
+                y: -self.height / 5;
+                x: (self.width) / 3;
+                text: "(" + root.x_coord + "," + root.y_coord + ")";
+                font-size: 10px;
+            }
             galaxy-star := Rectangle{
                 y: (parent.height - self.height) / 2.5;
                 width: 40px;

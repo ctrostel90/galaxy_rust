@@ -1,0 +1,82 @@
+import { HorizontalBox, VerticalBox, LineEdit, SpinBox, Button } from "std-widgets.slint";
+import {GalaxyTileItem} from "../widgets/galaxy_tile.slint";
+
+export global CreateGalaxyAdapter{
+    in-out property <string> name: "Default Name";
+    in-out property <int> num-planets: 0;
+    in-out property <string> sun-color: "#ffff00";
+
+    callback create( /* name */ string, /* number planets */ int,/* sun color */ string,);
+}
+export component  GalaxyCreateView {
+    
+    Rectangle {
+        width: 300px;
+        background: #4f759b;
+        border-radius: 10px;
+        layout := VerticalBox {
+            width: 100%;
+            
+            title := Text {
+                text: "Create Galaxy";
+                font-family: "Roboto";
+                font-size: 24px;
+                color: #a2faa3;
+            }
+            HorizontalLayout {
+                spacing: 10px;
+                system-name-label := Text{
+                    font-size: 18px;
+                    text: "System Name:";
+                    vertical-alignment: center;
+                }
+                system-name-input := LineEdit{
+                    font-size: 16px;
+                    text: "Enter System Name";
+                }
+            }
+            
+            HorizontalLayout {
+                spacing: 10px;
+                system-number-planets-label := Text{    
+                    font-size: 18px;
+                    text: "Number of planets:";
+                    vertical-alignment: center;
+                }
+                system-number-planets-input := SpinBox{
+                    value: 0;
+                }
+            }
+
+            HorizontalLayout {
+                spacing: 10px;
+                sun-color-label := Text{    
+                    font-size: 18px;
+                    text: "Sun color:";
+                    vertical-alignment: center;
+                }
+                sun-color-input := LineEdit{
+                    font-size: 16px;
+                    text: "hex color value";
+                }
+            }
+            create-button := Button {
+                text: "Create Galaxy";
+                primary: true;
+                clicked => {
+                    root.create();
+                }
+            }
+        }
+    }
+
+    function reset(){
+        system-name-input.text = "";
+        system-number-planets-input.value = 0;
+        sun-color-input.text = "";
+    }
+    function create(){
+        CreateGalaxyAdapter.create(system-name-input.text,system-number-planets-input.value,sun-color-input.text);
+        root.reset();
+    }
+}

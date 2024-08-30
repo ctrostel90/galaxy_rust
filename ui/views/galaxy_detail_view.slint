@@ -20,34 +20,42 @@ export component  GalaxyDetailView {
         num-planets: 6};
     property <bool> details-visible: true;
 
-    layout := VerticalBox {
+    Rectangle {
         width: 175px;
-        title := Text {
-            text: "Selected Galaxy Overview";
-            font-family: "Roboto";
-            font-size: 24px;
-            height: 125px;
-            color: yellow;
-        }
-        selected-system-name-label := Text{
-            height: self.font-size * 1.1;
-            font-size: 18px;
-            text: selected-galaxy.name;
-            visible: root.details-visible;
-        }
-        selected-system-number-planets-label := Text{
-            height: self.font-size * 1.1;
-            text: selected-galaxy.num-planets + " planets";
-            font-size: 16px;
-            visible: root.details-visible;
-        }
-        selected-system-label := Text{
-            height: self.font-size * 1.1;
-            text: "Sun is this color";
-            font-size: 18px;
-            font-weight: 700;
-            color: root.selected-galaxy.sun-color;
-            visible: root.details-visible;
+        height: 100%;
+        background: #4f759b;
+        border-radius: 10px;
+    
+        layout := VerticalBox {
+            width: 175px;
+            
+            title := Text {
+                text: "Selected Galaxy Overview";
+                font-family: "Roboto";
+                font-size: 24px;
+                height: 125px;
+                color: yellow;
+            }
+            selected-system-name-label := Text{
+                height: self.font-size * 1.1;
+                font-size: 18px;
+                text: selected-galaxy.name;
+                visible: root.details-visible;
+            }
+            selected-system-number-planets-label := Text{
+                height: self.font-size * 1.1;
+                text: selected-galaxy.num-planets + " planets";
+                font-size: 16px;
+                visible: root.details-visible;
+            }
+            selected-system-label := Text{
+                height: self.font-size * 1.1;
+                text: "Sun is this color";
+                font-size: 18px;
+                font-weight: 700;
+                color: root.selected-galaxy.sun-color;
+                visible: root.details-visible;
+            }
         }
     }
 }

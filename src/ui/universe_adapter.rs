@@ -37,7 +37,15 @@ fn map_galaxy_to_item(galaxy: GalaxyModel) -> ui::GalaxyTileItem {
     ui::GalaxyTileItem {
         name: galaxy.name.into(),
         num_planets: galaxy.number_planets,
-        ..Default::default()
-        //#sun_color: galaxy.sun_color.into(),
+        sun_color: color_from_str(galaxy.sun_color),
+        occupied: if galaxy.number_planets>3 { true } else { false },
     }
+}
+
+fn color_from_str(input: String) -> Color{
+    Color::from_rgb_u8(
+        u8::from_str_radix(&input[1..3], 16).unwrap(),
+        u8::from_str_radix(&input[3..5], 16).unwrap(),
+        u8::from_str_radix(&input[5..7], 16).unwrap(),
+    )
 }
