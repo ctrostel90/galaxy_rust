@@ -8,11 +8,11 @@ use crate::mvc;
 
 #[derive(Clone)]
 pub struct MockGalaxyRepository {
-    galaxies: Rc<RefCell<Vec<mvc::GalaxyModel>>>,
+    galaxies: Rc<RefCell<Vec<Option<mvc::GalaxyModel>>>>,
 }
 
 impl MockGalaxyRepository {
-    pub fn new(galaxies: Vec<mvc::GalaxyModel>) -> Self {
+    pub fn new(galaxies: Vec<Option<mvc::GalaxyModel>>) -> Self {
         Self { galaxies: Rc::new(RefCell::new(galaxies)) }
     }
 }
@@ -23,7 +23,7 @@ impl traits::GalaxyRepository for MockGalaxyRepository {
     }
 
     fn get_galaxy(&self, index: usize) -> Option<mvc::GalaxyModel> {
-        self.galaxies.borrow().get(index).cloned()
+        self.galaxies.borrow().get(index).cloned().unwrap()
     }
 
     fn remove_galaxy(&self, index: usize) -> bool {
@@ -35,7 +35,7 @@ impl traits::GalaxyRepository for MockGalaxyRepository {
     }
 
     fn push_galaxy(&self, galaxy: mvc::GalaxyModel) -> bool {
-        self.galaxies.borrow_mut().push(galaxy);
+        self.galaxies.borrow_mut().push(Some(galaxy));
         true
     }
 }

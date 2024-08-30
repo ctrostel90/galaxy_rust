@@ -32,6 +32,8 @@ pub fn connect(view_handle: &ui::MainWindow, controller: UniverseOverviewControl
     // });
 }
 
+
+
 // maps a GalaxyModel (data) to a SelectionItem (ui)
 fn map_galaxy_to_item(galaxy: GalaxyModel) -> ui::GalaxyTileItem {
     ui::GalaxyTileItem {
