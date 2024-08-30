@@ -23,6 +23,10 @@ impl UniverseOverviewController{
     pub fn galaxy_model(&self) -> ModelRc<mvc::GalaxyModel> {
         ModelRc::new(self.galaxy_model.clone())
     }
+
+    pub fn select_galaxy(&self, index: usize){
+        self.galaxy_model.select_galaxy(index);
+    }
 }
 
 #[derive(Clone)]
@@ -34,6 +38,12 @@ struct GalaxyModel{
 impl GalaxyModel {
     fn new(repo: impl mvc::traits::GalaxyRepository + 'static) -> Self {
         Self { repo: Rc::new(repo), notify: Rc::new(Default::default())}
+    }
+    fn select_galaxy(&self, index:usize) {
+        match self.repo.get_galaxy(index){
+            None => println!("No Galaxy!"),
+            Some(galaxy) => println!("{}",galaxy.name),
+        };
     }
 }
 

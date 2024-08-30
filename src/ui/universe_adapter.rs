@@ -23,13 +23,13 @@ pub fn connect(view_handle: &ui::MainWindow, controller: UniverseOverviewControl
         .set_galaxies(Rc::new(MapModel::new(controller.galaxy_model(), map_galaxy_to_item)).into());
 
     
-    // connect_with_controller(view_handle, &controller, {
-    //     move |adapter: ui::UniverseOverviewAdapter, controller| {
-    //         adapter.on_show_create_task(move || {
-    //             controller.show_create_task();
-    //         })
-    //     }
-    // });
+    connect_with_controller(view_handle, &controller, {
+        move |adapter: ui::UniverseOverviewAdapter, controller| {
+            adapter.on_select_galaxy(move |index| {
+                controller.select_galaxy(index.try_into().unwrap());
+            })
+        }
+    });
 }
 
 

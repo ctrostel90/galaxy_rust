@@ -20,7 +20,7 @@ export global UniverseOverviewAdapter{
         {name:"System 15", occupied: true, sun-color: Colors.paleturquoise, num-planets: 10},
     ];
 
-    callback select-galaxy(int) -> GalaxyTileItem;
+    callback select-galaxy(int);
 
     select-galaxy(index) => {
         root.galaxies[index]
@@ -35,6 +35,10 @@ export component UniverseOverviewView {
     in property <int> view-rows: 7;
 
     callback update_selected_galaxy();
+
+    update_selected_galaxy => {
+        return selected-index;
+    }
     
     out property <int> selected-index;
 
@@ -49,7 +53,7 @@ export component UniverseOverviewView {
                     y_coord: row;
                     clicked => {
                         selected-index = root.view-columns * column + row;
-                        root.update_selected_galaxy();
+                        UniverseOverviewAdapter.select-galaxy(selected-index);
                     }
                 }
         }
