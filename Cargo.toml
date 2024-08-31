@@ -1,7 +1,7 @@
 [package]
 name = "hmi"
 version = "0.1.0"
-authors = ["BRGLOBAL\trostelc <connor.trostel@br-automation.com>"]
+authors = ["ctrostel"]
 edition = "2021"
 build = "build.rs"
 
