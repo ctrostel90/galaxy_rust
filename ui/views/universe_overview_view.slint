@@ -52,8 +52,10 @@ export component UniverseOverviewView {
                     x_coord: column;
                     y_coord: row;
                     clicked => {
-                        selected-index = root.view-columns * column + row;
-                        UniverseOverviewAdapter.select-galaxy(selected-index);
+                        if (self.selected){
+                            selected-index = root.view-columns * column + row;
+                            UniverseOverviewAdapter.select-galaxy(selected-index);
+                        }
                     }
                 }
         }

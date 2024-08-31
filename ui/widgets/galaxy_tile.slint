@@ -15,7 +15,7 @@ export component GalaxyTileView{
     in property <int> y_coord: 0;
     in property <int> index;
     
-    property <bool> selected: false;
+    out property <bool> selected: false;
     states[
         selected when selected: {
             background.background: #728c91;
