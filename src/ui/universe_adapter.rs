@@ -2,7 +2,7 @@ use slint::*;
 use std::rc::Rc;
 
 use crate::{
-    mvc::{UniverseOverviewController, GalaxyModel},
+    mvc::{GalaxyDetailController, GalaxyModel, UniverseOverviewController},
     ui,
 };
 
@@ -22,18 +22,32 @@ pub fn connect(view_handle: &ui::MainWindow, controller: UniverseOverviewControl
         .global::<ui::UniverseOverviewAdapter>()
         .set_galaxies(Rc::new(MapModel::new(controller.galaxy_model(), map_galaxy_to_item)).into());
 
-    
     connect_with_controller(view_handle, &controller, {
         move |adapter: ui::UniverseOverviewAdapter, controller| {
             adapter.on_select_galaxy(move |index| {
-                controller.select_galaxy(index.try_into().unwrap());
+                
             })
         }
     });
 }
 
+fn connect_with_universe_overview_controller(view_handle:&ui::MainWindow,
+    controller:&GalaxyDetailController,
+    connect_adapter_controller: impl FnOnce(ui::UniverseOverviewAdapter, GalaxyDetailController) + 'static,){
+        connect_adapter_controller(view_handle.global::<ui::UniverseOverviewAdapter>(),controller.clone());
+}
 
-
+pub fn connect_universe_overview_controller(view_handle:&ui::MainWindow, controller:&GalaxyDetailController, universe_controller: &UniverseOverviewController){
+    
+    connect_with_universe_overview_controller(view_handle, &controller,{
+        move|adapter,controller|{
+            adapter.on_select_galaxy(move|index:i32|{
+                let galaxy:GalaxyModel = universe_controller.select_galaxy(index.try_into().unwrap()).unwrap();
+                controller.show_galaxy(galaxy);
+            })
+        }
+    })
+}
 // maps a GalaxyModel (data) to a SelectionItem (ui)
 fn map_galaxy_to_item(galaxy: GalaxyModel) -> ui::GalaxyTileItem {
     ui::GalaxyTileItem {

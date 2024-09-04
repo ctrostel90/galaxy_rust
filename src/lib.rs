@@ -1,7 +1,8 @@
 pub mod mvc;
 pub mod ui;
 
-// mod callback;
+mod callback;
+pub use callback::*;
 
 pub use slint::*;
 

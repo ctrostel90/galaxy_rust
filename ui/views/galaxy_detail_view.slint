@@ -1,25 +1,27 @@
 import { HorizontalBox, VerticalBox } from "std-widgets.slint";
 import {GalaxyTileItem} from "../widgets/galaxy_tile.slint";
 
-export component  GalaxyDetailView {
-    callback set-selected-galaxy(GalaxyTileItem);
-    callback clear-selected-item;
-    
-    set-selected-galaxy(new-selected-item) => {
-        details-visible = true;
-        selected-galaxy = new-selected-item;
-    }
-    clear-selected-item => {
-        details-visible = false;
-    }
-    
-    property <GalaxyTileItem> selected-galaxy: {
+export global GalaxyDetailAdapter{
+    in-out property <GalaxyTileItem> galaxy: {
         name:"System 1", 
         occupied: true, 
         sun-color: Colors.green, 
         num-planets: 6};
-    property <bool> details-visible: true;
 
+    out property <bool> visible;
+
+    callback show_galaxy(GalaxyTileItem);
+
+    show_galaxy(new-galaxy) => {
+        visible = true;
+        galaxy = new-galaxy;
+    }
+    
+}
+export component  GalaxyDetailView {
+    callback set-selected-galaxy(GalaxyTileItem);
+    callback clear-selected-item;
+   
     Rectangle {
         width: 175px;
         height: 100%;
@@ -39,22 +41,22 @@ export component  GalaxyDetailView {
             selected-system-name-label := Text{
                 height: self.font-size * 1.1;
                 font-size: 18px;
-                text: selected-galaxy.name;
-                visible: root.details-visible;
+                text: GalaxyDetailAdapter.galaxy.name;
+                visible: GalaxyDetailAdapter.visible;
             }
             selected-system-number-planets-label := Text{
                 height: self.font-size * 1.1;
-                text: selected-galaxy.num-planets + " planets";
+                text: GalaxyDetailAdapter.galaxy.num-planets + " planets";
                 font-size: 16px;
-                visible: root.details-visible;
+                visible: GalaxyDetailAdapter.visible;
             }
             selected-system-label := Text{
                 height: self.font-size * 1.1;
                 text: "Sun is this color";
                 font-size: 18px;
                 font-weight: 700;
-                color: root.selected-galaxy.sun-color;
-                visible: root.details-visible;
+                color: GalaxyDetailAdapter.galaxy.sun-color;
+                visible: GalaxyDetailAdapter.visible;
             }
         }
     }
